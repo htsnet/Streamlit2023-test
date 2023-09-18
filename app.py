@@ -8,7 +8,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.chains import ConversationalRetrievalChain
 from langchain.vectorstores import DocArrayInMemorySearch
-import huggingface_hub
+from transformers import AutoModelForSequenceClassification
 
 st.set_page_config(page_title="LangChain: Chat with Documents", page_icon="🦜")
 st.title("🦜 LangChain: Chat with Documents")
@@ -71,7 +71,7 @@ if not text:
     
 
 # Load the Hugging Face transformer model
-embeddings = huggingface_hub.load_embeddings("all-MiniLM-L6-v2")    
+embeddings = AutoModelForSequenceClassification.from_pretrained("all-MiniLM-L6-v2")
 retriever = configure_retriever(text, embeddings)
 
 # Setup memory for contextual conversation
