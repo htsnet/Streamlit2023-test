@@ -10,3 +10,4 @@ langchain-experimental
 streamlit
 docarray
 hnswlib
+huggingface_hub
