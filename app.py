@@ -17,23 +17,9 @@ st.title("🦜 LangChain: Chat with Documents")
 
 @st.cache_resource(ttl="1h")
 def configure_retriever(text):
-    # Read documents
-    # docs = []
-    # temp_dir = tempfile.TemporaryDirectory()
-    # for file in uploaded_files:
-    #     temp_filepath = os.path.join(temp_dir.name, file.name)
-    #     with open(temp_filepath, "wb") as f:
-    #         f.write(file.getvalue())
-    #     loader = PyPDFLoader(temp_filepath)
-    #     docs.extend(loader.load())
-
-    # Split documents
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=200)
-    splits = text_splitter.splitlines(text)
-
     # Create embeddings and store in vectordb
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-    vectordb = DocArrayInMemorySearch.from_documents(splits, embeddings)
+    vectordb = DocArrayInMemorySearch.from_text(text, embeddings)
 
     # Define retriever
     retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 2, "fetch_k": 4})
