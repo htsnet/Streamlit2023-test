@@ -16,20 +16,20 @@ st.title("🦜 LangChain: Chat with Documents")
 
 
 @st.cache_resource(ttl="1h")
-def configure_retriever(uploaded_files):
+def configure_retriever(text):
     # Read documents
-    docs = []
-    temp_dir = tempfile.TemporaryDirectory()
-    for file in uploaded_files:
-        temp_filepath = os.path.join(temp_dir.name, file.name)
-        with open(temp_filepath, "wb") as f:
-            f.write(file.getvalue())
-        loader = PyPDFLoader(temp_filepath)
-        docs.extend(loader.load())
+    # docs = []
+    # temp_dir = tempfile.TemporaryDirectory()
+    # for file in uploaded_files:
+    #     temp_filepath = os.path.join(temp_dir.name, file.name)
+    #     with open(temp_filepath, "wb") as f:
+    #         f.write(file.getvalue())
+    #     loader = PyPDFLoader(temp_filepath)
+    #     docs.extend(loader.load())
 
     # Split documents
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=200)
-    splits = text_splitter.split_documents(docs)
+    splits = text_splitter.split_documents(text)
 
     # Create embeddings and store in vectordb
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
@@ -80,14 +80,9 @@ if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.")
     st.stop()
 
-uploaded_files = st.sidebar.file_uploader(
-    label="Upload PDF files", type=["pdf"], accept_multiple_files=True
-)
-if not uploaded_files:
-    st.info("Please upload PDF documents to continue.")
-    st.stop()
-
-retriever = configure_retriever(uploaded_files)
+text = st.text_area("Paste your text here", height=200)
+if text:
+    retriever = configure_retriever(text)
 
 # Setup memory for contextual conversation
 msgs = StreamlitChatMessageHistory()
