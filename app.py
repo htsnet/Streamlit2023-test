@@ -1,5 +1,4 @@
 import os
-import tempfile
 import streamlit as st
 from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import PyPDFLoader
@@ -9,13 +8,13 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.chains import ConversationalRetrievalChain
 from langchain.vectorstores import DocArrayInMemorySearch
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+import huggingface_hub
 
 st.set_page_config(page_title="LangChain: Chat with Documents", page_icon="🦜")
 st.title("🦜 LangChain: Chat with Documents")
 
 # @st.cache(allow_output_mutation=True)
-def configure_retriever(text):
+def configure_retriever(text, embeddings):
     # Create embeddings and store in vectordb
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vectordb = DocArrayInMemorySearch.from_text(text, embeddings)
@@ -70,8 +69,10 @@ if not text:
     st.info("Please paste your text to continue.")
     st.stop()
     
-    
-retriever = configure_retriever(text)
+
+# Load the Hugging Face transformer model
+embeddings = huggingface_hub.load_embeddings("all-MiniLM-L6-v2")    
+retriever = configure_retriever(text, embeddings)
 
 # Setup memory for contextual conversation
 msgs = StreamlitChatMessageHistory()
