@@ -16,7 +16,7 @@ st.title("🦜 LangChain: Chat with Documents")
 # @st.cache(allow_output_mutation=True)
 def configure_retriever(text, embeddings):
     # Create embeddings and store in vectordb
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    # embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vectordb = DocArrayInMemorySearch.from_text(text, embeddings)
 
     # Define retriever
