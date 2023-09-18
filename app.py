@@ -14,7 +14,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 st.set_page_config(page_title="LangChain: Chat with Documents", page_icon="🦜")
 st.title("🦜 LangChain: Chat with Documents")
 
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def configure_retriever(text):
     # Create embeddings and store in vectordb
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
