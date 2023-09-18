@@ -81,8 +81,12 @@ if not openai_api_key:
     st.stop()
 
 text = st.sidebar.text_area("Paste your text here", height=200)
-if text:
-    retriever = configure_retriever(text)
+if not text:
+    st.info("Please paste your text to continue.")
+    st.stop()
+    
+    
+retriever = configure_retriever(text)
 
 # Setup memory for contextual conversation
 msgs = StreamlitChatMessageHistory()
