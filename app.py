@@ -13,6 +13,9 @@ from transformers import AutoModelForSequenceClassification
 st.set_page_config(page_title="LangChain: Chat with Documents", page_icon="🦜")
 st.title("🦜 LangChain: Chat with Documents")
 
+# Load the model
+embeddings = AutoModelForSequenceClassification.from_pretrained("all-MiniLM-L6-v2")
+
 # @st.cache(allow_output_mutation=True)
 def configure_retriever(text, embeddings):
     # Create embeddings and store in vectordb
@@ -68,10 +71,7 @@ text = st.sidebar.text_area("Paste your text here", height=200)
 if not text:
     st.info("Please paste your text to continue.")
     st.stop()
-    
 
-# Load the Hugging Face transformer model
-embeddings = AutoModelForSequenceClassification.from_pretrained("all-MiniLM-L6-v2")
 retriever = configure_retriever(text, embeddings)
 
 # Setup memory for contextual conversation
