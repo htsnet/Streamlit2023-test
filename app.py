@@ -80,7 +80,7 @@ if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.")
     st.stop()
 
-text = st.text_area("Paste your text here", height=200)
+text = st.sidebar.text_area("Paste your text here", height=200)
 if text:
     retriever = configure_retriever(text)
 
